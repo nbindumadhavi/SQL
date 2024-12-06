@@ -1,0 +1,279 @@
+SUB-QUERY
+----------
+
+ non-corelated subquery
+1 write a query to display the employees who are getting more salary than average salary by using emp table?
+A select * from emp where sal>(select avg(sal) from emp);
+
+2  write a query to display the employees who are working in sales department from emp,dept tables by using sub-query?
+A select * from emp where deptno=(select deptno from dept where dname='SALES');
+
+3 write a query to display senior most employee details from emp table?
+A select * from emp where hiredate=(select min(hiredate) from emp);
+
+4 write a query to display the employees who are getting more salary than average salary than the lowest paid employee in 10th department from emp table?
+A select * from emp where sal=(select min(sal) from emp where deptno=10); 
+
+5 write a query to display the 2nd highest salary from emp table?
+A select * from emp where sal=(select max(sal) from emp where sal<(select max(sal)from emp));
+
+6 write a query to display lowest avg(sal) job from emp table by using group by clause?
+A select avg(sal),job from emp 
+  group by job
+  having avg(sal)=(select min(avg(sal)) from emp group by job);
+
+7 write a query to display those jobs average salary more than CLERK job average salary from emp table by using group by clause?
+A select avg(sal),job from emp group by job having avg(sal)>(select avg(sal) from emp where job='CLERK');
+
+8 write a query to display highest no.of employees department from emp table by using group by function?
+A select deptno,count(*) from emp group by deptno having count(*)=(select count(*) from emp group by deptno)
+
+9 write a query to display the employees whose salary more than the ALLEN salary and job is same as JONES job from emp table?
+A select * from emp where sal>(select sal from emp where ename='ALLEN') and job=(select job from emp where ename='JONES'); 
+
+10 write a query to display those departments who are working either SALES or RESEARCH departments from emp,dept tables by using subquery?
+A select * from emp where deptno in(select deptno from dept where dname='SALES' or dname='RESEARCH' );
+
+11 write a query to display those departments from dept table having employees in emp table?
+A select * from dept where deptno in(select deptno from emp);
+
+12 write a query to display those departments from dept table does not have employees in emp table by using subquery?
+A select * from dept where deptno not in(select deptno from emp);
+
+13 write a query to display the employees who are getting more than 30000 annsal from emp table by using subquery?
+A select ename,sal,sal*12 annsal from emp where sal*12>30000;(without subquery)
+		OR
+  select * from(select ename,sal,sal*12 annsal from emp where sal*12>30000);(with subquery)
+
+14 write a query to display 1st row from emp table by using rownum?
+A select * from emp where rownum=1;
+
+15 write a query to display 2nd row from emp table by using rownum?
+A select * from emp where rownum=2;
+note--generally nownum works with more than 1 +ve integer , it works with <,<= operators 
+solution-- select * from emp where rownum<=2;
+	OR
+16 write a query to display 2nd row from emp table by using rownum aliasname?
+A select * from(select rownum ,ename from emp) where rownum=2;
+solution1--select * from(select rownum r,ename from emp) where r=2;
+solution2--select * from(select rownum r,emp.* from emp) where r=2;
+ 
+17 write a query to display 5 rows from emp table by using rownum?
+A select * from emp where rownum<=5;
+	OR
+   write a query to display 5 rows from emp table by using fetch first clause?
+A select * from emp fetch first 5 rows only;
+
+18 write a query to display first 5 highest salary employees from emp table by using rownum?
+A select * from(select * from emp order by sal desc) where rownum<=5;
+	OR
+   write a query to display first 5 highest salary employees from emp table by using fetch first clause?
+A select * from emp order by sal desc fetch first 5 rows only;
+
+19 write a query to display 5th highest salary employees from emp table?
+A select * from(select * from emp order by sal desc) where rownum<=5 minus
+ select * from(select * from emp order by sal desc) where rownum<=4; 
+ 
+20 write a query to display 2nd row from emp table?
+A select * from emp where rownum<=2 minus
+ select * from emp where rownum=1;
+		OR
+ write a query to display 2nd row from emp table by using row_number() analytical function,rowid?
+A select * from(select ename,sal,deptno,row_number() over (order by rowid) r from emp) where r=2;
+
+21  write a query to display last 2 rows from emp table?
+A select * from emp where rownum<=14 minus
+ select * from emp where rownum<=12; 
+	OR
+ select * from emp minus
+ select * from emp where rownum<=12; 
+		OR
+ write a query to display last 2 rows from emp table by using row_number() analutycal function, rowid?
+A select * from(select ename,sal,deptno,row_number() over (order by rowid desc) r from emp) where r<=2; (rowid --it is in order by default so desc means reverse so we can easy to write last 2 rows)
+
+22 write a query to display rows between  4 to 8 from emp table by using rownum alias name?
+A select * from(select rownum r,emp.* from emp) where r between 4 and 8;
+
+23 write a query to display the rows 2,3,5,7,9 from emp table by using rownum alias name?
+A select * from(select rownum r,emp.* from emp) where r in(2,3,5,7,9);
+
+24 write a query to display even no.of records by using rownum aliasname?
+A select * from(select rownum r,emp.* from emp) where mod(r,2)=0;
+
+25 write a query to display the 1st and last rows from emp table by using rownum alias name?
+A select * from(select rownum r,emp.* from emp) where r=1 or r=14;
+  select * from(select rownum r,emp.* from emp) where r=1 or r=(select count(*) from emp);(it is actual ansr)
+
+26 write a query to skip the first 3 rows & then display the remaining all rows from emp table by using rownum alias name?
+A select * from(select rownum r,emp.* from emp) where r>3;
+	OR
+   write a query to skip the first 3 rows & then display the remaining all rows from emp table by using fetch first clause?
+A select * from emp offset 3 rows fetch next 11 rows only;
+
+27 write a query to display the 5th highest salary from emp table by using rownum alias name?
+A select * from(select rownum r,ename,sal from(select * from emp order by sal desc)) where r=5;
+	OR
+  write a query to display the 5th highest salary from emp table by using analytical function?
+A select * from(select emp.*,row_number() over (order by sal desc) r from emp) where r=5;
+
+28 write a query to display the nth highest salary from emp table by using rownum alias name?
+A select * from(select rownum r,ename,sal from(select * from emp order by sal desc)) where r=&N;
+	OR
+write a query to display the 5th highest salary from emp table by using analytical function?
+A select * from(select emp.*,row_number() over (order by sal desc) r from emp) where r=&N;
+
+29  write a query to display first 50% of highest salary of employee from emp table by using fetch first clause?
+A select * from emp order by sal desc fetch first 50 percent rows only;
+
+fetch first clause--with ties(for samevalues of 2 columns)
+select * from emp order by sal desc fetch first 2 rows with ties; 
+ 
+30 write a query which is used to display each department employees and also display each and every department highest salary to lowest salary and also automatically assigns ranks in each and every group by using analytical function?
+A select * from(select emp.*,row_number()  over (partition by deptno order by sal desc) r from emp) where r<=10;(upto 10--high to low ranks)
+
+31 write a query to display 2nd highest salary employee in each department from emp table by using analytical function?
+A select * from(select emp.*,row_number() over (partition by deptno order by sal desc) r from emp) where r=2;
+
+32 write a query to display last row from emp table by using rowid?
+A select * from emp where rowid=(select max(rowed) from emp);
+
+33 write a query to delete duplicate rows from below table?
+SNO
+----
+10
+10
+10
+20
+20
+30
+30
+40
+50
+A delete from test where rowid not in((select min(rowid) from test group by sno));
+4 rows deleted.
+select * from test;
+       SNO
+----------
+	10
+	20
+	30
+	40
+	50
+34 write a query to display duplicate rows from following table?
+SNO
+---
+10
+10
+10
+20
+20
+30
+30
+40
+50
+A select * from(select sno,count(*) from test group by sno having count(*)>1) ;
+	OR
+ select sno,count(*) from test group by sno having count(*)>1 ;
+
+35 write a query to display whose names and mailids are same from the below table?
+    SNO NAME       MAILID
+---------- ---------- --------------------
+	1  bindu      abc@gmail.com
+	2  madhavi    xyz@gmail.com
+	3  bindu      abc@gmail.com
+A select * from(select name,mailid,count(*) from test group by name,mailid having count(*)>1);
+		OR
+ select name,mailid,count(*) from test group by name,mailid having count(*)>1;
+
+36 write a query to display 2nd row from each department from emp table by using row_number() analytical function, rowid?
+A select * from(select emp.*,row_number() over (partition by deptno order by rowid) r from emp) where r=2;
+
+lag() analytical function(compare current row value withprevious row value)
+syntax--lag(colname,offset(number),default value(number)) over (partition bycolname order by colname(asc/desc))
+EX--select empno,ename,sal,lag(sal,2,0) over (order by empno) prev_sal from emp
+
+lead() analytical function(compare current row value with next row value)
+syntax--lead(colname,offset(number),default value(number)) over (partition bycolname order by colname(asc/desc))
+EX--select empno,ename,sal,lead(sal,1,2) over (order by empno) next_sal from emp
+
+37 write a query to display most recently joined employee in each department from emp table by using lead() analytical function?
+A select * from(select empno,ename,hiredate,lead(hiredate) over (partition by deptno order by hiredate) r from emp) where r is null;(why r is null means see above lead() example the next_val column last row is null row, so we can retrieve last joining date using this query)
+
+114 write a query to display 2nd highest salary from following table by using corelated subquery?
+ENAME		  SAL
+---------- ----------
+abc		  100
+xyz		  150
+mno		  200
+pqr		  300
+A select * from test t1 where 3=(select count(*) from test t2 where t2.sal>=t1.sal);
+----just analisys
+insert into test values('nbm',200);
+select * from test;
+ENAME		  SAL
+---------- ----------
+abc		  100
+xyz		  150
+mno		  200
+pqr		  300
+nbm		  200
+
+select * from test t1 where 2=(select count(*) from test t2 where t2.sal>=t1.sal);
+no rows selected
+select * from test t1 where 3=(select count(*) from test t2 where t2.sal>=t1.sal);
+ENAME		  SAL
+---------- ----------
+mno		  200
+nbm		  200
+	OR
+--actual solution
+select * from test t1 where 2=(select count(distinct(sal)) from test t2 where t2.sal>=t1.sal);
+
+38 write a query to display 2nd highest salary from emp table by using corelated subquery?
+A select * from emp e1 where 2=(select count(distinct(sal)) from emp e2 where e2.sal>=e1.sal);
+
+39 write a query to display nth highest salary from emp table by using corelated subquery?
+A select * from emp e1 where &n=(select count(distinct(sal)) from emp e2 where e2.sal>=e1.sal);
+
+40 write a query to display the employees who are getting more salary than average salary of their jobs from emp table by using corelated subquery?
+A select * from emp e1 where sal>(select avg(sal) from emp e2 where e2.job=e1.job);
+
+41 write a query to display those departments from dept table having employees in emp table table by using corelated subquery exists operator?
+A select * from dept d1 where exists(select * from emp e1 where e1.deptno=d1.deptno);
+
+42 write a query to display those departments from dept table having employees in emp table table by using non corelated subquery in operator?
+A select * from dept where deptno in(select deptno from emp);
+
+43 write a query to display those departments from dept table does not have employees in emp table table by using corelated subquery exists operator?
+A select * from dept d where not exists(select * from emp e where e.deptno=d.deptno); 
+
+44 write a query to display those departments from dept table does not have employees in emp table table by using non corelated subquery? 
+A select * from dept where deptno not in(select deptno from emp);
+
+45 write a query to display the employees who are getting same salary as scott salary from emp table by using corelated subquery exists operator?
+A select * from emp e1 where exists(select * from emp e2 where e2.sal=e1.sal and e2.ename='SCOTT');
+
+----multiple column subquery
+syntax---select * from tabname where(col1,col2..) in(select col1,col2,.. from tabname where condition);
+
+46 write a multiple column subquery which is used to display employees whose job,mgr match with the job,mgr of the employee 'SCOTT' from emp table?
+A select * from emp where(job,mgr) in(select job,mgr from emp where ename='SCOTT');
+
+47 write a query to display the employees who are getting max sal in each department from emp table by using multiple column subquery?
+A select * from emp where (sal) in(select max(sal) from emp group by deptno);
+
+------
+update emp set sal=2850 where ename='FORD';
+select * from emp where (sal) in(select max(sal) from emp group by deptno);(after update it is retrive repeated rows)
+to overcome this, then 
+select * from emp where (deptno,sal) in(select deptno,max(sal) from emp group by deptno); 
+
+48 write a query to display the senior most employees in each job from emp table by using multicolumn subquery?
+A select * from emp where(job,hiredate) in(select job,min(hiredate) from emp group by job);
+
+49 write a query to dsplay the employees who are getting more salary than average salary of eac department from emp table?
+A select * from emp where sal>all(select avg(sal) from emp group by deptno);
+
+50 write a query to display the employees who are getting more salary than the salaries of all CLERKS from emp table by using subquery special operator and also display final output salary wise descending order?
+A select * from emp where sal>all(select sal from emp where job='CLERK') order by sal desc;
+
