@@ -1,0 +1,95 @@
+PARTITIONS
+-----------
+
+
+1 Range partition(based on range of values)
+syntax: create table tabname(col1 dtype(size),clo2 dtype(size),..) partition by range(keycolname)
+	(partition partitionname1 values less than(value),
+	 partition partitionname2 values less than(value),
+	 partition partitionname3 values less than(value),..
+	 partition partitionnamen values less than(maxvalues));
+ex:
+create table test(order_id number(10),order_date date) partition by range(order_date)
+(partition p1 values less than('01-jan-2021'),
+ partition p2 values less than('01-mar-2021'),
+ partition p3 values less than('01-aug-2021'));
+
+insert into test values(1,'01-may-2021');
+insert into test values(1,'30-jan-2019');
+insert into test values(1,'09-nov-2018');
+
+select * from test;
+
+select * from test partition(p1);
+select * from test partition(p2);
+select * from test partition(p3);
+
+2 ex2:
+create table test1(empno number(10),ename varchar2(10),sal number(10)) partition by range(sal)
+(partition p1 values less than(1000),
+ partition p2 values less than(2000),
+ partition p3 values less than(3000),
+ partition p4 values less than(MAXVALUES));
+
+insert into test1 values(&N,'&N',&N);
+
+select * from test1;
+     EMPNO ENAME	     SAL
+---------- ---------- ----------
+	 1 a		     500
+	 2 b		    1000
+	 3 c		    1700
+	 4 d		    2000
+	 5 e		    8000
+	 6 f		    9000
+
+select * from test1 partition(p4);
+select * from test1 partition(p3);
+select * from test1 partition(p2);
+select * from test1 partition(p1);
+
+3 list partition(based on list of values)
+syntax: 
+create table tabname(col1 dtype(size),clo2 dtype(size),..) partition by list(keycolname)
+	(partition partitionname1 values(value),
+	 partition partitionname2 values(value),
+	 partition partitionname3 values(value),..
+	 partition partitionnamen values(default));
+ex:
+create table test2(id number(10),name varchar2(10)) partition by list(name)
+(partition p1 values('india','pakistan'),
+ partition p2 values('us','uk','canada'),
+ partition p3 values(default));
+insert into test2 values(&N,'&N');
+select * from test2;
+	ID NAME
+---------- ----------
+	 4 india
+	 1 aus
+	 2 england
+	 3 japan
+select * from test2 partition(p1);
+select * from test2 partition(p2);
+select * from test2 partition(p3);
+
+hash partition
+syntax:
+create table tabname(col1 dtype(size),clo2 dtype(size),..) partition by hash(keycolname)
+	partitions anynumber;
+ex:
+create table test3(sno number(10),sal number(10)) partition by hash(sal)
+	partitions 5;
+insert into test3 values(1,2000);
+insert into test3 values(2,5000);
+insert into test3 values(3,4000);
+
+
+select partition_name from user_tab_partitions where table_name='TEST3'
+
+PARTITION_NAME
+--------------------
+SYS_P781
+SYS_P782
+SYS_P783
+SYS_P784
+SYS_P785
