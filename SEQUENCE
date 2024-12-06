@@ -1,0 +1,129 @@
+SEQUENCE
+--------
+
+Syntax--
+create sequence sequencename
+start with n
+increment by n
+minvalue n
+maxvalue n
+cycle/nocycle
+cache/nocache;
+
+ex--
+create sequence s1 
+start with 5
+increment by 1
+maxvalue 10;
+
+select s1.nextval from dual;
+select s1.currval from dual;
+
+syntax--
+alter sequence sequencename
+parameter newvalue;
+
+ex--
+create sequence s1 
+start with 5
+increment by 1
+minvalue 3
+maxvalue 100;
+
+ex2--(ERROR)
+create sequence s1 
+start with 3
+increment by 1
+minvalue 5
+maxvalue 100;
+*
+ERROR: ORA-04006: START WITH cannot be less than MINVALUE
+
+Auto increment(primary key) in sequence
+
+create sequence s1;
+create table test(num number(10)primary key ,name varchar2(10))
+insert into test(num,name)values(s1.num,'&Name');
+select * from test;
+alter table test add rno number(10); 
+select * from test;
+create sequence s2
+start with 1001;
+update test set rno=s2.nextval;
+select * from test;
+      NUM  NAME 	     RNO
+---------- ---------   ----------
+	1  bindu	    1001
+	2  madhavi	    1002
+	3  nalluri	    1003
+Oracle 12C---
+create sequence s1;
+create table test(sno number(10)default s1.nextval primary key,name varchar2(10));
+insert into test(name)values('&N');
+select * from test;
+       SNO NAME
+---------- ----------
+	 1 bindu
+	 2 madhavi
+	 3 nalluri
+cache-default value-20
+create sequence s1
+start with 1 
+cache 10;
+select * from user_sequences;
+create sequence s2
+start with 1 
+nocache;
+select * from user_sequences;
+create sequence s3
+start with 1 
+cache 1;
+ERROR: ORA-04010: the number of values to CACHE must be greater than 1
+
+cycle:(once sequence reached maxval then it will start with minvalue)
+ex 1:
+create sequence s1
+start with 5
+increment by 1
+minvalue 3
+maxvalue 7
+cycle
+nocache;
+ex 2:
+create sequence s2
+start with 5
+increment by 1
+minvalue 3
+maxvalue 7
+cycle;
+ERROR: ORA-04013: number to CACHE must be less than one cycle
+solution---
+create sequence s2
+start with 5
+increment by 1
+minvalue 3
+maxvalue 7
+cycle
+cache 4;
+ex 3:
+create sequence s3
+start with 5
+increment by 1
+minvalue 3
+maxvalue 7
+cycle
+cache 5;
+ERROR: ORA-04013: number to CACHE must be less than one cycle
+nocycle---(once sequence reached maxval then it cannot be started with minvalue)
+ex:
+create sequence s1
+start with 5
+increment by 1
+minvalue 3
+maxvalue 7
+nocycle
+nocache;
+select s1.nextval from dual;-5
+/--6
+/--7
+/--ERROR: ORA-08004: sequence S1.NEXTVAL exceeds MAXVALUE and cannot be instant
