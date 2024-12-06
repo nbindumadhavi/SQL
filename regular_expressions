@@ -1,0 +1,118 @@
+REGULAR_EXPRESSIONS(Posix notations)
+-----------------------------------
+
+57 write a query to display the all employees whose ename contain AM or AR string from emp table by using regexp_like() function?
+A select * from emp where regexp_like(ename,'AM|AR');
+
+58 write a query to display the all employees whose ename starts with either A or B from   emp table by using regexp_like() function?
+A select * from emp where regexp_like(ename,'^A|^B'); 
+
+59 write a query to display the all employees whose ename ends with either N or S from   emp table by using regexp_like() function?
+A select * from emp where regexp_like(ename,'N$|S$');
+
+--regexp_like having case sensitive(c) and case insensitive(i)
+
+60 write a query to display the all employees whose ename starts with s from emp table by using regexp_like() function?
+A insert into emp(empno,ename) values(1,'smith');
+  select * from emp where regexp_like(ename,'^S');
+	OR
+  select * from emp where regexp_like(ename,'^S','c');
+	OR
+  select * from emp where regexp_like(ename,'^S','i');
+
+61 write a query to display the all employees whose ename 2nd letter is either M or L or A from emp table by using regexp_like() function?
+A select * from emp where regexp_like(ename,'^.[MLA]');('.'-means 1st letter is any charcter)
+
+62 write a query to display the all employees whose ename 2nd letter is other than MLA from emp table by using regexp_like() function?
+A select * from emp where regexp_like(ename,'^.[^MLA]');--([^..] means nagation matching other than characters)
+
+63 write a query to display phone numbers having 3 digits 3 digits end with 3 digits from below table by using regexp_like() function?
+PHONENUMBERS
+------------
+123.456.678.8976
+345.678.564
+234.654.345.67
+A select * from test where regexp_like(phonenumbers,'\d{3}.\d{3}.\d{3}$');
+		OR
+  select * from test where regexp_like(phonenumbers,'[[:digit:]]{3}.[[:digit:]]{3}.[[:digit:]]{3}$');
+		OR
+  select * from test where regexp_like(phonenumbers,'[0-9]{3}.[0-9]{3}.[0-9]{3}$');
+
+64 write a query to display the employees by using below table matches at least 2 a's and matches 0 or more b's & matches at least 1 c by using regexp_like() function?
+NAME
+-------
+aaaabcc
+aabbbbc
+aacc
+a
+A select * from test where regexp_like(name,'aa+b*c+');(+ means 1 or more, * means 0 or more 
+		OR
+select * from test where regexp_like(name,'aa+b*c?');(? means 0 or 1 occurrence)
+
+65 write a query to display the employees from the below table based on following pattern  by using regexp_like() function?
+pattern--digit.one or more spaces abc
+NAME
+-----
+1. abc
+2.  abc
+3.   abc
+4.abc
+A select * from test where regexp_like(name,'\d\.\s+abc');
+
+66 write a query to display the valid mailids from the below table by using regexp_instr() function?
+MAILID
+--------
+abc@gmail.com
+xyz@gmail.com
+pqr @gmail.com
+zzz  @gmail.com
+A select * from test where regexp_instr(mailid,'@')>0 and regexp_instr(mailid,' ')=0;
+
+67 A select regexp_substr('my employee name is:murali,5000','[[:punct:]][^,]+') from dual;( this query tell to oracle to start at : include all character until u reach a comma)
+
+68 format the given phn number with the following pattern by using regexp_replace()?
+pattern: +(XX)XXX-XXXX-XXX, given phn number : +919959430399
+A select regexp_replace('+919959430399','([[:digit:]]{2})([[:digit:]]{3})([[:digit:]]{4})([[:digit:]]{3})','(\1)\2-\3-\4') from dual;
+
+69 write a query to display the all employees whose ename contain 2 times R from emp table by using regexp_count()?
+A select * from emp where regexp_count(ename,'R')=2;
+
+70 write a query to display valid pan card number from the following table by using regexp_like()?
+PANCARD
+-------
+ABCDE1234Z
+abcd3456z
+12345bcdA
+12345abcdabcd
+XYZPQ6789A
+A select * from test where regexp_like(pancard,'^[A-Z]{5}[0-9]{4}[A-Z]{1}$');
+
+71 write a regular expression pattern based on following contains by using regexp_like()?
+ 1 starts with any character and many characters
+ 2 after characters @ should be used 
+ 3 ends with any character and many characters
+MAILID
+--------
+abc@gmail.com
+@gmail.com
+.@gmail.com
+abc@
+A select * from test where regexp_like(mailid,'^[A-Za-z0-9._+-]+@[A-Za-z0-9._+-]+$');
+
+72 write a query to display valid aadhar number from the following table by using regexp_like() based on following condition?
+condition: first digit must be other than 0 or 1
+AADHAR
+------
+3456 5678 4567
+1234 9879 4563
+0123 6547 3456
+3456 5678 4576 4875
+A select * from test where regexp_like(aadhar,'^[^01][0-9]{3}\s[0-9]{4}\s[0-9]{4}$');
+
+73 write a query to display the employees whose ename starts with S_ from emp table by using like operator?
+A insert into emp(empno,ename)values(1,'S_MITH');
+  select * from emp where ename like 'S|_%' escape '|';(we can use any escape character)
+
+74  write a query to display the employees whose ename starts with S_ from emp table by using like operator?
+A insert into emp(empno,ename)values(2,'S__MITH');
+  select * from emp where ename like 'S+_+_%' escape '+';(we can use any escape character)
