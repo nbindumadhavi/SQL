@@ -1,0 +1,17 @@
+DCL(data control language)
+
+creating user(1st we must access from admin permission(conn sysas sysdba/sys), oracle 19c we can create user without admin access)
+syntax--
+create user username identified by password;
+grant connect,resource to username;(giving permission)
+conn username/password)-connecting user
+ex:
+create user madhu identified by bindu;
+grant connect,resource to bindu;
+conn madhu/bindu;
+select * from emp;--table does not exist
+conn system/oracle;
+grant all on emp to madhu;
+grant succeesded
+conn Madhu/bindu; 
+select * from system.emp;
