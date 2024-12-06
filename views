@@ -1,0 +1,97 @@
+VIEW
+-----
+syntax--
+create or replace view viewname
+as
+select * from tablename
+where condition;
+
+ex 1:
+create or replace view v1
+as
+select * from emp where deptno=10;
+insert into v1(empno,ename,deptno) values(1,'bindu',30);
+select * from v1;
+ex 2:
+create or replace view v2
+as 
+select ename,sal,deptno from emp
+where deptno=10;
+insert into v2(ename,sal,deptno)values('abc',2000,30);
+ERROR: ORA-01400: cannot insert NULL into ("SYSTEM"."EMP"."EMPNO")  
+
+Functions or expressions in views(we must use alias name for fun/expr col name)
+create or replace view v1
+as
+select deptno,max(sal) from emp group by deptno;
+ERROR: ORA-00998: must name this expression with a column alias
+solution---
+create or replace view v1
+as
+select deptno,max(sal) s from emp group by deptno;
+select * from v1;
+select text from user_views
+where view_name='V1';
+
+pseudo column
+ex:
+create view v1
+as 
+select rownum,ename from emp where rownum<=3;
+ERROR: ORA-00998: must name this expression with a column alias
+create view v1
+as 
+select rownum r,ename from emp where rownum<=3;
+select * from v1;
+	 R ENAME
+---------- ----------
+	 1 SMITH
+	 2 ALLEN
+	 3 WARD
+select text from user_views where view_name='V1';
+
+Materialized View
+syntax--
+create materialized view viewname
+as 
+select stmt
+
+ex 1:(materialized view
+create table base(sno number(10),name varchar2(10));
+insert into base values(&N,'&N');
+select * from base;
+       SNO NAME
+---------- ----------
+	 1 a
+	 2 b
+	 3 c
+	 4 d
+create materialized view mv1
+as 
+select * from base;
+select query from user_mviews
+where mview_name='MV1';
+ex 2(view)
+create or replace view v1
+as 
+select * from base;
+
+NOTE--
+view-- when base table is updated then view table is affected 
+mview--when base table is updated then view table is not affected, then whenever we are refresh the mview then only it effected
+Ex :
+update base set name=upper(name);
+select * from base;
+select * from v1;
+select * from mv1;
+exec dbms_mview.refresh('mv1');--refreshing mview
+PL/SQL procedure successfully completed.
+select * from mv1;
+
+128 create a materialized view which contain joins and aggregatable functions?
+A create materialized view mv
+as 
+select dname,sum(sal) from emp e join dept d
+on e.deptno=d.deptno
+group by dname;
+select * from mv; 
