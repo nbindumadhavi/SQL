@@ -1,0 +1,95 @@
+OPERATORS
+---------
+
+1 write a query to display the employees except job as clerk from emp table? 
+A select ename from emp where job!='CLERK'; 
+	OR
+ select * from emp where job<>'CLERK';
+
+2 write a query to display the employees who are getting more than 2000 salary from emp table?
+A select * from emp where sal>2000;
+
+3 write a query to display the employees who are belongs to 10th department from emp table?
+A select * from emp where deptno=10;
+
+---creating a new table from existing table and with copy the data
+SQL> create table test as select * from emp;
+---creating a new table from existing table and without copy the data
+SQL> create table test1 as select * from emp where 1=2;
+
+4 write a query to display ename, sal, annsal from emp table?
+A select ename,sal,sal*12 annsal from emp;
+
+5 write a query to display the employees who are getting more than 30000 annsal from employees?
+A select ename,sal,sal*12 annsal from emp where sal*12>30000;
+
+6 write a query to display ename, sal, half of the sal from emp table?
+A select ename,sal,sal/2 half_of_the_sal from emp;
+
+7  write a query to display the employees whose CLERKS are getting more than 1000 from emp table?
+A select * from emp where job='CLERK' and sal>1000;
+
+8 write a query to display the employees those CLERKS belongs to 10th department from emp table?
+A select * from emp where job='CLERK' and deptno=10;
+
+9  write a query to display the employees whose job is CLERK or salesman or manager from emp table?
+A select * from emp where job='CLERK' or job='SALESMAN' or job='MANAGER';
+
+10  write a query to display the employees who are belongs to 10,20,30,50,70,90 departments from emp table?
+A select * from emp where deptno=10 or deptno=20 or deptno=30 or deptno=50 or deptno=70 or deptno=90;
+
+11 write a query to display the employees who are belongs to 10,20,30,50,70,90 departments from emp table by using in operator?
+A select * from emp where deptno in(10,20,30,50,60,90);
+
+12 11 write a query to display the employees who are belongs to 10,20 departments from emp table by using not in operator?
+A select * from emp where deptno not in(10,20);
+---------
+SQL> select * from emp where deptno in(10,20,null);--worked(in-internally uses logical or operator)
+SQL> select * from emp where deptno not in(10,20,null);--not worked(in-internally uses logical and operator)
+
+13 write a query to display ename, sal, comm, sal+comm of the employee SMITH from emp table?
+A select ename,sal,comm,sal+nvl(comm,0) from emp where ename='SMITH';
+
+14 update employee commission within emp table based on following conditions by using nvl2 function?
+ a)if comm is null then update comm is 500
+ b)if comm is not null then update comm is comm+500
+A update emp set comm=nvl2(comm,comm+500,500);
+  select * from emp;
+
+15 write a query to display the employees who are getting sal between 2000 to 5000 from emp table by using between operator?
+A select * from emp where sal between 2000 and 5000;
+	OR
+  select * from emp where sal>=2000 and sal<=5000;
+
+16  write a query to display the employees who are getting sal between 2000 to 5000 from emp table by using between operator?
+A select * from emp where sal not between 2000 and 5000;
+
+17 write a query to display the employees whose enames between ALLEN and JAMES from emp table by using between operator?
+A select * from emp where ename between 'ALLEN' and 'JAMES';
+
+18 write a query to display the employees whose commission is null from emp table?
+A select * from emp where comm is null;
+
+19 write a query to display the employees whose commission is not null from emp table?
+A select * from emp where comm is not null;
+
+20 write a query to display the employees whose ename starts with S from emp table by using like operator?
+A select * from emp where ename like 'S%';
+
+21 write a query to display the employees whose ename contain capital letter M in any position from emp table by using like operator?
+A select * from emp where ename like '%M%';
+
+22 write a query to display the employees whose ename contain either AM or AR strings from emp table by using like operator?
+A select * from emp where ename like '%AM%' or ename like '%AR%';
+
+23 write a query to display the employees whose ename 2nd letter is L from emp table by using like operator?
+A select * from emp where ename like '_L%';
+
+24 write a query to display the employees whose ename 3rd letter is L from emp table by using like operator?
+A select * from emp where ename like '__L%';
+
+25 write a query to display the employees whose empno starts with 75 from emp table by using like operator?
+A select * from emp where empno like '75%';
+
+26 write a query to display the employees who are joining in DECEMBER from emp table by using like operator?
+A select * from emp where hiredate like '%DEC%';
