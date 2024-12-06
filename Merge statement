@@ -1,0 +1,39 @@
+MERGE STATEMENT
+--------------
+
+merge into targettabname using sourcetabname
+on(join condition)
+when matched then 
+update set targettabcol1=sourcetabcol1,..
+delete where condition
+when not matched then 
+insert (target tabcolnames)values(sourcetabcolnames);
+
+EX--
+create table depts as select * from dept;
+insert into depts values(1,'a','b');
+select * from dept;(target table)
+select * from depts;(source table)
+
+merge into dept d using depts s
+on(d.deptno=s.deptno)
+when matched then 
+update set d.dname=s.dname,d.loc=s.loc
+when not matched then 
+insert(d.deptno,d.dname,d.loc) values(s.deptno,s.dname,s.loc);
+
+select * from dept;
+
+merge into dept d using depts s
+on(d.deptno=s.deptno)
+when matched then 
+update set d.dname=s.dname,d.loc=s.loc
+delete where d.deptno=10
+when not matched then 
+insert(d.deptno,d.dname,d.loc) values(s.deptno,s.dname,s.loc);
+
+
+ALTER TABLE depts
+ADD CONSTRAINT fk_dept
+FOREIGN KEY (deptno) REFERENCES dept(deptno)
+ON DELETE CASCADE;
