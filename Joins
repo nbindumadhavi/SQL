@@ -1,0 +1,41 @@
+JOINS
+--------
+1 write a query to display the employees who are working in the location Chicago from emp,dept tables by using equi join?
+A select ename,loc from emp e,dept d where e.deptno=d.deptno and loc='CHICAGO';
+
+2 write a query to display dname,sum(sal) from emp, dept tables by using equi join?
+A select dname,sum(sal) from emp e,dept d where e.deptno=d.deptno group by dname;
+
+3 write a query to display no.of employees in each location from emp,dept tables by using equi join?
+A select loc,count(*) from emp e,dept d where e.deptno=d.deptno group by loc; 
+
+4 write a query to display the employees who are getting same salary as scott salary from emp table by using self join?
+A select e2.ename,e2.sal from emp e1, emp e2 where e1.ename='SCOTT' and e1.sal=e2.sal;
+
+5  write a query to display the employees and their manager names from emp table by using self join?
+A select e1.ename employee ,e2.ename manager from emp e1,emp e2 where e1.mgr=e2.empno; 
+
+6 write a query to display the employees who are getting more salary than their manager salary from emp table by using self join?
+A select e1.ename employee ,e1.sal,e2.sal,e2.ename manager from emp e1,emp e2 where e1.mgr=e2.empno and e1.sal>e2.sal; 
+
+7  write a query to display the employees who are joining before their managers from emp table by using self join?
+A select e1.ename employee ,e1.hiredate,e2.hiredate,e2.ename manager from emp e1,emp e2 where e1.mgr=e2.empno and e1.hiredate<e2.hiredate;
+
+8 write a query to display the employees who are working in the location Chicago from emp,dept tables by using 9i inner join?
+A select ename,loc from emp e join dept d on e.deptno=d.deptno and loc='CHICAGO';
+	OR
+ select ename,loc from emp e join dept d on e.deptno=d.deptno where loc='CHICAGO';
+
+9 write a query to display the employees and their departments from emp,dept tables by using 9i inner join?
+A select ename,dname from emp e join dept d on e.deptno=d.deptno; 
+
+10 write a query to display the all employees and their departments from emp,dept tables by using 9i left outer join?
+A select ename,dname from emp e left outer join dept d on e.deptno=d.deptno; 
+
+11 write a query to display the all employees and their departments from emp,dept tables by using 9i right outer join?
+A select ename,dname from emp e right outer join dept d on e.deptno=d.deptno; 
+
+12 write a query to display the all employees and their departments from emp,dept tables by using 9i full outer join?
+A select ename,dname from emp e full outer join dept d on e.deptno=d.deptno; 
+
+ 
