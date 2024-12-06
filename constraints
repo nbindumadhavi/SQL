@@ -1,0 +1,21 @@
+CONSTRAINTS
+------------
+
+--column level syntax(not null, unique, primary key(only 1 column), foreign key,check)
+create table tabname(col1 datatype(size) constrainttype, col2datatype(size) constrainttype,..);
+
+--column level syntax(foreign key)
+   create table tabname(col1 datatype(size)references mastertabname(primarycolname),..);
+
+--column level syntax(check)
+  create table tabname(col1 datatype(size), check(logicalcondition1),..);
+
+---table level syntax(unique, primary key)
+create table tabname(col1 datatype(size), col2datatype(size),..constrainttype(col1,col2,..));
+
+---table level syntax(foreign key)
+create table tabname(col1 datatype(size), col2datatype(size),..foriegnkey(col1,col2,..)references mastertabname(primarycolnames);
+
+---table level syntax(check)
+create table tabname(col1 datatype(size), col2datatype(size),..check(logicalcondition1,logicalcondition2,..));
+
