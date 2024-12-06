@@ -1,0 +1,75 @@
+FUNCTIONS
+----------
+
+1 write a query which is used to retrieve first part (upto first .)from below mailidsby using substr(), instr() functions using below table?
+MAILID--(table test)
+-----
+abc.xyz@gmail.com
+pqrs.kkkk@gmail.com
+A select substr(mailid,1,instr(mailid,'.')-1) from test;
+
+2 write a query which counts no.of occurrences of the character 'E' with in given string 'SLEEP' by using length(), replace() functions?
+A select replace('SLEEP','E') from dual;
+  select length('SLEEP')-length(replace('SLEEP','E')) from dual;
+
+3 write a query to display the first date of the current month by using sysdate, add_months(), last_day() functions?
+A select last_day(add_months(sysdate,-1))+1 from dual;
+
+4 write a query which is used to display given date into character format by using to_char()?
+given date--15-JUNE-05 dispaly format--15/JUNE/05
+A select to_char(to_date('15-JUNE-05','DD-MONTH-yy'),'DD/fmMONTH/YY')from dual;
+	OR
+  select to_char(to_date('15-JUNE-05','DD/fmMONTH/YY')from dual;
+
+5 write a query which is used to add 3 days into the given date '10-AUG-05'?
+A select to_date('10-AUG-05','DD-MON-YY')+3 from dual;
+
+6 write a query which is used to add 3 days into the given date '10-08-05'?
+A select to_date('10-08-05','DD-MM-YY')+3 from dual;
+
+7 write a query to display the employees who are joining in DECEMBER from emp table by using to_char() function?
+A select * from emp where to_char(hiredate,'fmMONTH')='DECEMBER'; 
+  	OR
+  select * from emp where to_char(hiredate,'MON')='DEC'; 
+	OR
+  select * from emp where to_char(hiredate,'MM')='12'; 
+
+8 write a query to display the employees who are joining in the year 81  from emp table by using to_char() function?
+A  select * from emp where to_char(hiredate,'YY')='81'; 
+
+9 write a query to display the employees who are joining before 15th of every month from emp table by using to_char() function?
+A select * from emp where to_char(hiredate,'DD')<'15'; 
+
+10 write a query to display the employees who are joining today from table?
+A insert into emp(empno,ename,hiredate)values(1,'bindu',sysdate);
+  select * from emp;
+  select * from emp where trunc(hiredate)=trunc(sysdate);
+	OR
+  select to_char(hiredate,'DD-MON-YY HH24:MI:SS') from emp
+  select * from emp where hiredate=to_date( to_char(hiredate,'DD-MON-YY HH24:MI:SS'),'DD-MON-YY HH24:MI:SS');
+
+11 write a query which is used to display the employee name and also no.of years those employees working upto today date from emp table by using months_between()?
+A insert into emp(empno,ename,hiredate)values(1,'bindu',sysdate);
+  select round(months_between(sysdate,hiredate)/12) years from emp;
+
+12  write a query to display the no.of employees in each department from emp table by using group by clause?
+A select deptno,count(*) from emp group by deptno;
+
+13  write a query to display the no.of employees in each job from emp table by using group by clause?
+A select job,count(*) from emp group by job;
+
+14 write a query to display the minimum, maximum salaries of each department from emp table by using group by clause?
+A select deptno,min(sal),max(sal) from emp group by deptno;
+
+15 write a query to display those departments having more than 3 employees from emp table by using group by clause?
+A select deptno,count(*) from emp group by deptno having count(*)>3;
+
+16 write a query to display those departments sum(sal) having more than 9000 from emp table by using group by clause?
+A select deptno,sum(sal) from emp group by deptno having sum(sal)>9000;
+
+17 write a query to display those departments sum(sal) having more than 3 employees in department from emp table by using group by clause?
+A select deptno,sum(sal) from emp group by deptno having count(*)>3;
+
+18 write a query to display year and no.of employees joining for the year in which more than 1 year was hired from emp table by using group by clause?
+A select to_char(hiredate,'yyyy') years,count(*) from emp group by to_char(hiredate,'yyyy') having count(*)>1;
+
