@@ -1,0 +1,43 @@
+Occupatiom table
+Name          occupation
+samantha      doctor
+julia         actor
+maria         actor
+meera         singer
+ashley        professor        
+ketter        professor
+christeen     professor
+jane          actor
+jenny         doctor
+priya         singer
+output be like
+Ashely(P)
+Christeen(P)
+Jane(A)
+Jenny(D)
+Julia(A)
+Ketty(P)
+Maria(A)
+Meera(S)
+Priya(S)
+Samantha(D)
+There are a total of 2 doctors.
+There are a total of 2 singers.
+There are a total of 3 actors.
+There are a total of 3 professors.
+
+SELECT 
+    Name || '(' || SUBSTR(Occupation, 1, 1) || ')' AS Result
+FROM 
+    OCCUPATIONS
+ORDER BY 
+    Name;
+SELECT 
+    'There are a total of ' || COUNT(*) || ' ' || LOWER(Occupation) || 's.' AS Result
+FROM 
+    OCCUPATIONS
+GROUP BY 
+    Occupation
+ORDER BY 
+    COUNT(*), Occupation;
+
